@@ -1,0 +1,89 @@
+//plugins {
+//	id 'java'
+//	id 'org.springframework.boot' version '3.0.6'
+//	id 'io.spring.dependency-management' version '1.1.0'
+//}
+
+plugins {
+	id 'org.springframework.boot' version '3.0.0'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'java'
+//	id 'com.palantir.docker' version '0.31.0'
+//	id 'com.palantir.docker-run' version '0.31.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+def dockerOwner = 'ronak'
+
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+springBoot {
+	buildInfo()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation 'org.springframework.data:spring-data-jpa'
+////	implementation 'javax.persistence:javax.persistence-api'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'mysql:mysql-connector-java:8.0.28'
+	implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.8.0'
+	implementation(group:'commons-io', name: 'commons-io', version: '2.11.0')
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus:1.9.0'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+//	runtimeOnly 'com.h2database:h2'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+//tasks.register('prepareDockerfileTemplate', Copy) {
+//	from "src/main/resources/docker"
+//	include "Dockerfile"
+//	filter { it.replaceAll('<%=name%>', project.name) }
+//	filter { it.replaceAll('<%=version%>', project.version) }
+//	into "$buildDir"
+//}
+//// add explicit dependency, otherwise we get warning at console
+//dockerPrepare.dependsOn bootJar
+//bootJar.dependsOn prepareDockerfileTemplate
+//bootJarMainClassName.dependsOn prepareDockerfileTemplate
+
+//// https://plugins.gradle.org/plugin/com.palantir.docker
+//docker {
+//	name "${dockerOwner}/${project.name}:${project.version}"
+//	files "$buildDir/libs/${project.name}-${project.version}.jar"
+//	dockerfile file("$buildDir/Dockerfile")
+//}
+//
+//// https://plugins.gradle.org/plugin/com.palantir.docker-run
+//dockerRun {
+//	name "${project.name}"
+//	image "${dockerOwner}/${project.name}:${project.version}"
+//	ports '8080:8080','8081:8081'
+//	clean true
+//	daemonize false
+//}
+
+
+
